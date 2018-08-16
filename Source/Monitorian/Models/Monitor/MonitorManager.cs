@@ -39,7 +39,7 @@ namespace Monitorian.Models.Monitor
 					var deviceItem = deviceItems[index];
 					yield return new DdcMonitorItem(
 						deviceInstanceId: deviceItem.DeviceInstanceId,
-						description: deviceItem.Description,
+						description: deviceItem.FriendlyName,
 						displayIndex: deviceItem.DisplayIndex,
 						monitorIndex: deviceItem.MonitorIndex,
 						handle: physicalItem.Handle,
@@ -71,7 +71,7 @@ namespace Monitorian.Models.Monitor
 					var deviceItem = deviceItems[index];
 					yield return new WmiMonitorItem(
 						deviceInstanceId: deviceItem.DeviceInstanceId,
-						description: deviceItem.Description,
+						description: deviceItem.FriendlyName,
 						displayIndex: deviceItem.DisplayIndex,
 						monitorIndex: deviceItem.MonitorIndex,
 						brightnessLevels: desktopItem.BrightnessLevels,
@@ -88,7 +88,7 @@ namespace Monitorian.Models.Monitor
 			{
 				yield return new InaccessibleMonitorItem(
 					deviceInstanceId: deviceItem.DeviceInstanceId,
-					description: deviceItem.Description,
+					description: deviceItem.FriendlyName,
 					displayIndex: deviceItem.DisplayIndex,
 					monitorIndex: deviceItem.MonitorIndex);
 			}

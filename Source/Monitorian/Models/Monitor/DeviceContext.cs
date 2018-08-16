@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Devices.Display;
 
 namespace Monitorian.Models.Monitor
 {
@@ -121,16 +122,21 @@ namespace Monitorian.Models.Monitor
 			[DataMember(Order = 3)]
 			public byte MonitorIndex { get; private set; }
 
+			[DataMember(Order = 4)]
+			public string FriendlyName { get; private set; }
+
 			public DeviceItem(
 				string deviceInstanceId,
 				string description,
 				byte displayIndex,
-				byte monitorIndex)
+				byte monitorIndex,
+				string friendlyName)
 			{
 				this.DeviceInstanceId = deviceInstanceId;
 				this.Description = description;
 				this.DisplayIndex = displayIndex;
 				this.MonitorIndex = monitorIndex;
+				this.FriendlyName = friendlyName;
 			}
 		}
 
@@ -182,11 +188,16 @@ namespace Monitorian.Models.Monitor
 					if (!isActive)
 						continue;
 
+					var displayMonitorTask = DisplayMonitor.FromIdAsync(deviceInstanceId).AsTask();
+					displayMonitorTask.Wait();
+					var displayMonitor = displayMonitorTask.Result;
+
 					yield return new DeviceItem(
 						deviceInstanceId: deviceInstanceId,
 						description: monitor.DeviceString,
 						displayIndex: displayIndex,
-						monitorIndex: monitorIndex);
+						monitorIndex: monitorIndex,
+						friendlyName: displayMonitor.DisplayName);
 
 					monitorIndex++;
 				}
